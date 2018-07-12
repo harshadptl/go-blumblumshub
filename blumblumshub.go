@@ -56,3 +56,15 @@ func Seed(s uint64) error {
 		return s;
 	}
 }
+/** Get next item from the random number generator. */
+func Next() (uint64, error) {
+	if x == 0 {
+		return x, errors.New("seed not set")	
+	}
+	
+	cachedx := x
+	cachedx = cachedx * x
+	cachedx = cachedx % M
+	x = cachedx
+	return x, nil
+}
