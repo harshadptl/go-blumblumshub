@@ -1,10 +1,12 @@
 package blumblumshub
 
+import "errors"
 
 var p uint64 = 5651
 var q uint64 = 5623
 var M uint64 = p * q
 
+var x uint64 = 0
 
 /* ChangePrimes is used to set custom values for primes p & q 
 used in the algorithm. It throws an error if the primes are not
@@ -19,6 +21,8 @@ func ChangePrimes(p1, q1 uint64) {
 
 	p = p1
 	q = q1
+	
+	M = p * q
 	
 	return
 }
@@ -35,4 +39,20 @@ func gcd(a, b uint64) uint64 {
 		}
 	}
 	return a;
+}
+
+
+/** Seed the random number generator. */
+func Seed(s uint64) error {
+	if(s == 0) {
+		errors.New("seed cannot be 0")
+	} else if(s == 1) {
+		errors.New("seed cannot be 1")
+	} else if(gcd(s, M) != 1) {
+		f := fmt.Sprintf("seed must be coprime with M, %d", M)
+		errors.New(f)
+	} else {
+		x = s;
+		return s;
+	}
 }
